@@ -2,28 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+enum ENEMY_STATE {
+    PATROL,
+    CHASE,
+    ATTACK,
+    IDLE
+}
 public class EnemyAI : MonoBehaviour {
-
+    
     private Animator animator;
     private NavMeshAgent agent;
     private Transform target;
     private Vector3 movementDirection;
-    public float fieldOfVisionAngle = 60.0f;
+    public float fieldOfVisionAngle = 50.0f;
+    public FieldOfView fieldOfView;
+    private ENEMY_STATE state = ENEMY_STATE.IDLE;
+    //Patrol
+    public Transform[] points;
+    private int currentPoint = 0;
     private void Start() {
         animator=GetComponent<Animator>();
         agent=GetComponent<NavMeshAgent>();
         target=GameObject.FindGameObjectWithTag("Player").transform; // Replace "Player" with the tag of your target object
+        //Patrol
+        agent.autoBraking = false;
+        goToNextPoint();
     }
 
-    private void FixedUpdate() {
+    private void Update() {
         // Calculate the distance to the target
-        if(isPlayerOnSight()) { // Player on sight?
-            // Chase it!
+        if(fieldOfView.canSeePlayer) {
+            //if(isClose){
+            //    state = ENEMY_STATE.ATTACK;
+            //}else{
+            //    state = ENEMY_STATE.CHASE;
+            //}
             float distanceToTarget = Vector3.Distance(agent.transform.position, target.position);
             // add "refreshable count down" to deactivate a "lost player track" behavior
-        } else { // Player is not on sight
-            // continue patrol behavior
+        } else {
+            state = ENEMY_STATE.PATROL;
+        }
+
+        switch(state){
+            case ENEMY_STATE.PATROL:
+                bool canGoToNextPoint = !agent.pathPending && agent.remainingDistance < 0.5f;
+                if (canGoToNextPoint){
+                    goToNextPoint();
+                }
+                break;
+            case ENEMY_STATE.CHASE:
+                break;
+            case ENEMY_STATE.ATTACK:
+                break;
+            case ENEMY_STATE.IDLE:
+                break;
         }
 
         // Set the speed parameter of the animator based on the distance to the target
@@ -47,10 +79,17 @@ public class EnemyAI : MonoBehaviour {
 
     }
 
-    private bool isPlayerOnSight() {
-        Vector3 distanceToTarget = target.position-transform.position;
-        bool a = fieldOfVisionAngle > Vector3.Angle(transform.forward, distanceToTarget);
-        Debug.Log(a);
-        return distanceToTarget.magnitude < 100 && a;
+    void goToNextPoint() {
+        // Returns if no points have been set up
+        if (points.Length == 0){
+            return;
+        }
+
+        // Set the agent to go to the currently selected destination.
+        agent.SetDestination(points[currentPoint].position);
+
+        // Choose the next point in the array as the destination,
+        // cycling to the start if necessary.
+        currentPoint = (currentPoint + 1) % points.Length;
     }
 }
