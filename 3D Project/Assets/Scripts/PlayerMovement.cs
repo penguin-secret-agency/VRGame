@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
 
@@ -9,11 +7,12 @@ public class PlayerMovement : MonoBehaviour
     public float Gravity = 9.81f;
     public float WalkSpeed = 4f;
     public float RunSpeed = 8f;
+    public CharacterController controller;
 
-    private CharacterController controller;
     private Vector3 CurrentMoveVelocity;
     private Vector3 MoveDampVelocity;
-
+    private Vector3 playerInput = Vector3.zero;
+    private bool isSprinting = false;
     private Vector3 CurrentForceVelocity;
     // Start is called before the first frame update
     void Start()
@@ -23,19 +22,13 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        Vector3 playerInput = new Vector3 {
-            x=Input.GetAxis("Horizontal"),
-            y=0,
-            z=Input.GetAxis("Vertical")
-        };
-
+    {       
         if(playerInput.magnitude > 1f) {
             playerInput.Normalize();
         }
 
         Vector3 moveVector = transform.TransformDirection(playerInput);
-        float CurrentSpeed = Input.GetKey(KeyCode.LeftShift) ? RunSpeed : WalkSpeed;
+        float CurrentSpeed = isSprinting ? RunSpeed : WalkSpeed;
 
         CurrentMoveVelocity=Vector3.SmoothDamp(CurrentMoveVelocity, moveVector*CurrentSpeed, ref MoveDampVelocity, MoveSmoothTime);
         controller.Move(CurrentMoveVelocity*Time.deltaTime);
@@ -47,5 +40,15 @@ public class PlayerMovement : MonoBehaviour
             CurrentForceVelocity.y-=Gravity*Time.deltaTime;
         }
         controller.Move(CurrentForceVelocity*Time.deltaTime);
+    }
+
+    void OnMovement(InputValue value) {
+        Vector2 axis = value.Get<Vector2>();
+        playerInput.x=axis.x;
+        playerInput.z=axis.y;
+    }
+
+    void OnSprint(InputValue value) {
+        isSprinting=value.isPressed;
     }
 }

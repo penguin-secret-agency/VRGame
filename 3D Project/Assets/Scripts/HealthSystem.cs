@@ -1,7 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthSystem : MonoBehaviour {
     public float health = 100;
+
     public void addHealth(float amount) {
         health+=amount;
     }
@@ -11,4 +14,5 @@ public class HealthSystem : MonoBehaviour {
             health=0;
         }
     }
+
 }
