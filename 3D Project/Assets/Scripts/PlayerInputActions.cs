@@ -168,6 +168,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""47d7b9e0-5340-400e-8c77-94f7699cbcee"",
+                    ""path"": ""<XRController>{RightHand}/thumbstick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""bc22aee4-db90-44f9-b8ba-0af638125fc0"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
