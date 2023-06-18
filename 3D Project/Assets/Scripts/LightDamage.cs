@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LightDamage : MonoBehaviour
 {
-    public Light light;
+    public Light lightSource;
     public float baseDamageMultiplier = 10f;
     public LayerMask targetMask;
     public LayerMask obstructionMask;
@@ -11,7 +11,7 @@ public class LightDamage : MonoBehaviour
     public float damageTimer = 0.1f;
     void Start()
     {
-        light=gameObject.GetComponent<Light>();
+        lightSource=gameObject.GetComponent<Light>();
         StartCoroutine(dealDamageRoutine());
     }
 
@@ -25,7 +25,7 @@ public class LightDamage : MonoBehaviour
     }
 
     private void dealDamage() {
-        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, light.range, targetMask);
+        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, lightSource.range, targetMask);
 
         if(rangeChecks.Length!=0) {
             Transform target = rangeChecks[0].transform;
@@ -45,7 +45,7 @@ public class LightDamage : MonoBehaviour
         if(!enemyHealthSystem) {
             return;
         }
-        float rawDamage = light.intensity*baseDamageMultiplier;
+        float rawDamage = lightSource.intensity*baseDamageMultiplier;
         enemyHealthSystem.decreasedHealth(rawDamage*damageTimer);
     }
 }
