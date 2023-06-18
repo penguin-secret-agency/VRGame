@@ -43,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void OnMovement(InputValue value) {
-        Debug.Log(value.Get());
         Vector2 axis = value.Get<Vector2>();
         playerInput.x=axis.x;
         playerInput.z=axis.y;
