@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 4646334144299031277}
   - component: {fileID: 1932574884413007599}
   - component: {fileID: 1638839948676413809}
+  - component: {fileID: 7674837920997489228}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -358,6 +359,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1638839948676413809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,6 +396,22 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7674837920997489228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4646334144299031284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066a9e888dc02c74b919fd1dae21a8d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerLook: {fileID: 4646334144299031277}
+  playerMovement: {fileID: 4646334144299031275}
+  healthSystem: {fileID: 1932574884413007599}
+  gameManagerScript: {fileID: 0}
 --- !u!1 &7390988602121378733
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,6 +422,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8292827747209709204}
   - component: {fileID: 7031184767876844647}
+  - component: {fileID: 4197565211627015888}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -437,7 +458,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.9811321, g: 0.46695015, b: 0.06941971, a: 1}
   m_Intensity: 1
-  m_Range: 20
+  m_Range: 6
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -486,3 +507,24 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0.05
   m_ShadowAngle: 0
+--- !u!114 &4197565211627015888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7390988602121378733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f0cc9072fb24f74580c442fe152a2c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  light: {fileID: 0}
+  baseDamageMultiplier: 10
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 1
+  damageTimer: 0.1
