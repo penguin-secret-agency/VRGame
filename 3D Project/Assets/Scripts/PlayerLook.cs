@@ -33,6 +33,6 @@ public class PlayerLook : MonoBehaviour
         PlayerCamera.localEulerAngles=new Vector3(XYRotation.x, 0f, 0f);
         //side-to-side rotation
         XYRotation.y+=MouseInput.x*Sensitivities.x;
-        transform.eulerAngles=new Vector3(0f, XYRotation.y, 0f);        
+        transform.eulerAngles=new Vector3(0f, XYRotation.y, 0f);
     }
 }
