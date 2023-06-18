@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class HealthSystem : MonoBehaviour {
     public float health = 100;
-    public GameManagerScript gameManager;
+    public UnityEvent onDeath = new UnityEvent();
     public void addHealth(float amount) {
         health+=amount;
     }
@@ -12,21 +10,9 @@ public class HealthSystem : MonoBehaviour {
         bool willDie = health>0&&health-amount<=0;
         if(willDie) {
             health=0;
-            gameManager.GameOver();
-            disablePlayer();
+            onDeath.Invoke();
         } else if(health > 0){
             health-=amount;
-        }
-    }
-
-    private void disablePlayer() {
-        PlayerLook look = gameObject.GetComponent<PlayerLook>();
-        PlayerMovement movement = gameObject.GetComponent<PlayerMovement>();
-        if(look!= null) {
-            look.enabled=false;
-        }
-        if(movement!=null) {
-            movement.enabled=false;
         }
     }
 
