@@ -10,13 +10,14 @@ enum ENEMY_STATE {
 }
 public class EnemyAI : MonoBehaviour {
     
-    private Animator animator;
+    public Animator animator;
     public NavMeshAgent agent;
     public FieldOfView fieldOfView;
     public HealthSystem enemyHealthSystem;
     private bool isTrackingPlayer = false;
     private float walkingSpeed = 1.3f;
     private float runningSpeed = 4.5f;
+    private bool hasReachedDestination = true;
     private ENEMY_STATE state = ENEMY_STATE.IDLE;
     //Patrol
     public Transform[] points;
@@ -26,17 +27,15 @@ public class EnemyAI : MonoBehaviour {
         if(enemyHealthSystem != null) {
             enemyHealthSystem.onDeath.AddListener(killEnemy);
         }
-        animator =GetComponent<Animator>();
-        agent.stoppingDistance=0.6f;
-        //Patrol
-        agent.autoBraking = false;
+        animator=GetComponent<Animator>();
     }
 
     private void killEnemy() {
-        Destroy(gameObject);
+        Destroy(gameObject);        
     }
 
-    private void Update() {            
+    private void Update() {
+        hasReachedDestination = agent.remainingDistance<agent.stoppingDistance;
         stateDecision();
         stateBehavior();
     }
@@ -63,30 +62,19 @@ public class EnemyAI : MonoBehaviour {
     private void stateBehavior() {
         switch(state) {
             case ENEMY_STATE.PATROL:
-                //if(animator) {
-                //    animator.SetBool("startWalking", true);
-                //    animator.SetFloat("Speed", walkingSpeed);
-                //}
                 bool canGoToPosition = !agent.pathPending&&agent.remainingDistance<agent.stoppingDistance&&!agent.isStopped;
                 if(canGoToPosition) {
                     StartCoroutine(goToNextPoint(walkingSpeed));
                 }
                 break;
             case ENEMY_STATE.TRACKING:
-                //if(animator) {
-                //    animator.SetFloat("Speed", runningSpeed);
-                //}
                 Vector3 lastKnownPosition = fieldOfView.directionToTargetRef;
                 goToDestination(lastKnownPosition, runningSpeed);
-                bool stopped = agent.remainingDistance<0.01f;
-                if(stopped) {
+                if(hasReachedDestination) {
                     isTrackingPlayer=false;
                 }
                 break;
             case ENEMY_STATE.CHASE:
-                //if(animator) {
-                //    animator.SetFloat("Speed", runningSpeed);
-                //}
                 Vector3 targetPosition = fieldOfView.targetRef.transform.position;
                 goToDestination(targetPosition, runningSpeed);
                 break;
@@ -105,6 +93,7 @@ public class EnemyAI : MonoBehaviour {
             yield return null;
         }
         agent.isStopped=true;
+        animator.SetFloat("Velocity", 0f);
         yield return new WaitForSeconds(5);
         goToDestination(points[currentPoint].position, speed);
 
@@ -114,9 +103,19 @@ public class EnemyAI : MonoBehaviour {
     }
 
     private void goToDestination(Vector3 destination, float speed) {
+        if(hasReachedDestination) {
+            animator.SetFloat("Velocity", 0f);
+            return;
+        }
+        if(speed<=walkingSpeed) {
+            animator.SetFloat("Velocity", 0.06f);
+        }
+        if(speed>=runningSpeed) {
+            animator.SetFloat("Velocity", 1f);
+        }
         agent.speed=speed;
         agent.isStopped=false;
-        agent.SetDestination(destination);
+        agent.SetDestination(destination);              
     }
 
     void OnTriggerEnter(Collider other) {

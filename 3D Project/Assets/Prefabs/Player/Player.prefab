@@ -519,7 +519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0cc9072fb24f74580c442fe152a2c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light: {fileID: 0}
+  lightSource: {fileID: 7031184767876844647}
   baseDamageMultiplier: 10
   targetMask:
     serializedVersion: 2
