@@ -14,6 +14,7 @@ public class EnemyAI : MonoBehaviour {
     public NavMeshAgent agent;
     public FieldOfView fieldOfView;
     public HealthSystem enemyHealthSystem;
+    public DissolverManager dissolverManager;
     private bool isTrackingPlayer = false;
     private float walkingSpeed = 1.3f;
     private float runningSpeed = 4.5f;
@@ -22,19 +23,23 @@ public class EnemyAI : MonoBehaviour {
     //Patrol
     public Transform[] points;
     private int currentPoint = 0;
-    private void Start() {
+    void Start() {
         enemyHealthSystem=GetComponent<HealthSystem>();
-        if(enemyHealthSystem != null) {
-            enemyHealthSystem.onDeath.AddListener(killEnemy);
-        }
+        enemyHealthSystem.onDeath.AddListener(() => {
+            enabled=false;
+            StartCoroutine(killEnemy());
+        });
         animator=GetComponent<Animator>();
     }
 
-    private void killEnemy() {
+    IEnumerator killEnemy() {
+        animator.SetBool("isDead", true);
+        GetComponent<Collider>().enabled=false;
+        yield return dissolverManager.startDissolving();      
         Destroy(gameObject);        
     }
 
-    private void Update() {
+    void Update() {
         hasReachedDestination = agent.remainingDistance<agent.stoppingDistance;
         stateDecision();
         stateBehavior();
