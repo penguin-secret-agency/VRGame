@@ -3,7 +3,17 @@ guid: 19a7f67bfe6050a41a80d749508325fc
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black_Material_Pbr
+    second: {fileID: 2100000, guid: ab54454c6fad0b4449b779d66e22af80, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eyes_of_lost_oneMaterial_Pbr
+    second: {fileID: 2100000, guid: 4c3bcb959d212224682f8d41173fa8d2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
