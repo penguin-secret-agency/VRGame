@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 4646334142435726570}
   - component: {fileID: 4646334142435726571}
   - component: {fileID: 2571896115976736424}
+  - component: {fileID: 5782796819065785997}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -194,6 +195,50 @@ MonoBehaviour:
   m_TrackingType: 0
   m_UpdateType: 0
   m_UseRelativeTransform: 0
+--- !u!114 &5782796819065785997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4646334142435726568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &4646334144299031284
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,6 +407,9 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1638839948676413809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,6 +459,7 @@ MonoBehaviour:
   playerLook: {fileID: 4646334144299031277}
   playerMovement: {fileID: 4646334144299031275}
   healthSystem: {fileID: 1932574884413007599}
+  lightDamage: {fileID: 0}
   gameManagerScript: {fileID: 0}
 --- !u!1 &7390988602121378733
 GameObject:
@@ -423,13 +472,14 @@ GameObject:
   - component: {fileID: 8292827747209709204}
   - component: {fileID: 7031184767876844647}
   - component: {fileID: 4197565211627015888}
+  - component: {fileID: 8903028660145451354}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8292827747209709204
 Transform:
   m_ObjectHideFlags: 0
@@ -528,3 +578,26 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   damageTimer: 0.1
+--- !u!114 &8903028660145451354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7390988602121378733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0

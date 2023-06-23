@@ -21,26 +21,36 @@ public class EnemyAI : MonoBehaviour {
     private bool hasReachedDestination = true;
     private ENEMY_STATE state = ENEMY_STATE.IDLE;
     //Patrol
-    public Transform[] points;
+    public Transform[] points = { };
     private int currentPoint = 0;
     void Start() {
         enemyHealthSystem=GetComponent<HealthSystem>();
         enemyHealthSystem.onDeath.AddListener(() => {
-            enabled=false;
-            StartCoroutine(killEnemy());
+            StartCoroutine(killSelf());
+        });
+        enemyHealthSystem.onDamageTaken.AddListener(() => {
+            GameObject attacker = enemyHealthSystem.getAttacker();
+            float amountByHealth = 1f - (enemyHealthSystem.health/enemyHealthSystem.getTotalHealth());
+            dissolverManager.setDissolveAmount(0.25f*amountByHealth);
+            if(state!=ENEMY_STATE.CHASE&&attacker) {
+                goToDestination(attacker.transform.position, runningSpeed);
+            }
         });
         animator=GetComponent<Animator>();
     }
 
-    IEnumerator killEnemy() {
+    IEnumerator killSelf() {
+        enabled=false;
+        agent.isStopped=true;
+        //agent.enabled=false;
         animator.SetBool("isDead", true);
         GetComponent<Collider>().enabled=false;
         yield return dissolverManager.startDissolving();      
-        Destroy(gameObject);        
+        Destroy(gameObject);
     }
 
     void Update() {
-        hasReachedDestination = agent.remainingDistance<agent.stoppingDistance;
+        hasReachedDestination = !agent.isStopped&&agent.remainingDistance<agent.stoppingDistance;
         stateDecision();
         stateBehavior();
     }
@@ -58,8 +68,10 @@ public class EnemyAI : MonoBehaviour {
             state=ENEMY_STATE.CHASE;        
         } else if(isTrackingPlayer) {
             state=ENEMY_STATE.TRACKING;
-        } else {
+        } else if(points.Length > 0){
             state=ENEMY_STATE.PATROL;
+        } else {
+            state=ENEMY_STATE.IDLE;
         }
     }
 
@@ -87,7 +99,6 @@ public class EnemyAI : MonoBehaviour {
                 state=ENEMY_STATE.PATROL;
                 break;
             case ENEMY_STATE.IDLE:
-                state=ENEMY_STATE.PATROL;
                 break;
         }
     }
@@ -125,10 +136,10 @@ public class EnemyAI : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         bool isPlayer = other.gameObject.CompareTag("Player");
-        if(isPlayer&&state==ENEMY_STATE.CHASE) {
+        if(isPlayer) {
             GameObject player = other.gameObject;
             HealthSystem PlayerHealthSystem = player.GetComponent<HealthSystem>();
-            PlayerHealthSystem.decreasedHealth(PlayerHealthSystem.health);
+            PlayerHealthSystem.decreasedHealth(PlayerHealthSystem.health, this.gameObject);
         }
     }
 }

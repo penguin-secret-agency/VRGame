@@ -19,7 +19,9 @@ public class LightDamage : MonoBehaviour
         WaitForSeconds wait = new WaitForSeconds(damageTimer);
 
         while(true) {
-            dealDamage();
+            if(lightSource.enabled) { 
+                dealDamage();
+            }
             yield return wait;
         }
     }
@@ -46,6 +48,6 @@ public class LightDamage : MonoBehaviour
             return;
         }
         float rawDamage = lightSource.intensity*baseDamageMultiplier;
-        enemyHealthSystem.decreasedHealth(rawDamage*damageTimer);
+        enemyHealthSystem.decreasedHealth(rawDamage*damageTimer, this.gameObject);
     }
 }
