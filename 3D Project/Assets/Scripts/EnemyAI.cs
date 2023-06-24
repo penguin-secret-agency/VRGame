@@ -110,7 +110,7 @@ public class EnemyAI : MonoBehaviour {
         }
         agent.isStopped=true;
         animator.SetFloat("Velocity", 0f);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(5f);
         goToDestination(points[currentPoint].position, speed);
 
         // Choose the next point in the array as the destination,

@@ -14,7 +14,7 @@ public class HealthSystem : MonoBehaviour {
         return totalHealth;
     }
     public void addHealth(float amount) {
-        health+=amount;
+        health=Mathf.Min(health+amount, totalHealth);
     }
     public GameObject getAttacker() {
         return this.attacker;

@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class PlayerManager : MonoBehaviour
 {
+    [Header("First Person")]
     public PlayerLook playerLook;
     public PlayerMovement playerMovement;
+    [Header("VR")]
+    public ActionBasedContinuousMoveProvider moveProvider;
+    [Header("Gameplay")]
     public HealthSystem healthSystem;
-    public LightDamage lightDamage;
-    public GameManagerScript gameManagerScript;
+    public GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,10 +21,12 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void killPlayer() {
-        if(gameManagerScript != null) {
-            Debug.Log("Mostra tela");
-            gameManagerScript.GameOver();
-        }        
+        if(gameManager != null) {
+            gameManager.GameOver();
+        }
+        if(moveProvider != null) {
+            moveProvider.moveSpeed=0f;
+        }
         if(playerMovement!=null) {
             playerMovement.enabled=false;
         }
