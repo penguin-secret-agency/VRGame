@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public GameObject gameOverUI;
+    public GameObject winUI;
     public bool isVR = false;
     // Start is called before the first frame update
     void Start()
@@ -25,11 +26,24 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver() {
+        if(winUI.activeInHierarchy) {
+            return;
+        }
         gameOverUI.SetActive(true);
         if(!isVR) {
             Cursor.visible=true;
             Cursor.lockState=CursorLockMode.None;
         }        
+    }
+    public void WinGame() {
+        if(gameOverUI.activeInHierarchy) {
+            return;
+        }
+        winUI.SetActive(true);
+        if(!isVR) {
+            Cursor.visible=true;
+            Cursor.lockState=CursorLockMode.None;
+        }
     }
 
     public void Restart() {

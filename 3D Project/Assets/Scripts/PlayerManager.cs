@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Gameplay")]
     public HealthSystem healthSystem;
     public GameManager gameManager;
+    public Transform respawnPoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,11 +21,8 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void killPlayer() {
-        if(gameManager != null) {
-            gameManager.GameOver();
-        }
-        if(moveProvider != null) {
+    public void stopMovement() {
+        if(moveProvider!=null) {
             moveProvider.moveSpeed=0f;
         }
         if(playerMovement!=null) {
@@ -33,5 +31,12 @@ public class PlayerManager : MonoBehaviour
         if(playerLook!=null) {
             playerLook.enabled=false;
         }
+    }
+
+    public void killPlayer() {
+        if(gameManager != null) {
+            gameManager.GameOver();
+        }
+        stopMovement();
     }
 }
