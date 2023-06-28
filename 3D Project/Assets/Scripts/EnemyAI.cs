@@ -32,7 +32,8 @@ public class EnemyAI : MonoBehaviour {
             GameObject attacker = enemyHealthSystem.getAttacker();
             float amountByHealth = 1f - (enemyHealthSystem.health/enemyHealthSystem.getTotalHealth());
             dissolverManager.setDissolveAmount(0.25f*amountByHealth);
-            if(state!=ENEMY_STATE.CHASE&&attacker) {
+            if(state!=ENEMY_STATE.CHASE&&!isTrackingPlayer&&attacker) {
+                Debug.Log(state);
                 goToDestination(attacker.transform.position, runningSpeed);
             }
         });
