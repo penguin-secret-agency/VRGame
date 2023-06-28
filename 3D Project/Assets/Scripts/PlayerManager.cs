@@ -20,7 +20,10 @@ public class PlayerManager : MonoBehaviour
             healthSystem.onDeath.AddListener(killPlayer);
         }
     }
-
+    void Awake() {
+        QualitySettings.vSyncCount=1;
+        Application.targetFrameRate=70;
+    }
     public void stopMovement() {
         if(moveProvider!=null) {
             moveProvider.moveSpeed=0f;
