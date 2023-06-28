@@ -46,7 +46,6 @@ public class DissolverManager : MonoBehaviour
                 for(int i = 0; i<materials.Count; i++) {
                     materials[i].SetFloat("_DissolveAmount", dissolveAmount);
                 }
-                dissolveAmount=1f;
                 yield return new WaitForSeconds(refreshRate);
             }
         }
